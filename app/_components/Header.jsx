@@ -13,14 +13,16 @@ import {
 
 function Header() {
   return (
-    <div className="flex shadow-lg justify-between bg-slate-100">
+    <div className="flex shadow-lg justify-between bg-slate-100 items-center">
       <div className="flex justify-between items-center p-1 bg-slate-100">
-        <Image src="/logo.png" alt="logo" width={80} height={80} />
+        <Image src="/logo.png" alt="logo" width={70} height={70} />
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <h2 className="flex m-5  items-center outline-none border rounded-full p-2 px-2 bg-slate-200">
-              <LayoutGrid className="h-5 w-5" />
+            <h2 className="flex m-5 items-center
+             outline-none border rounded-full p-2 px-2
+              bg-slate-200 cursor-pointer">
+              <LayoutGrid className="h-5 w-5" />Category
             </h2>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
@@ -35,9 +37,9 @@ function Header() {
 
         <div
           className="md:flex items-center gap-2
-         border rounded-full p-2 px-4 bg-slate-200 hidden"
+         border rounded-full p-2  bg-slate-200 hidden justify-between"
         >
-          <Search />
+          <Search/>
           <input type="text" placeholder="Search" className="outline-none" />
         </div>
       </div>
