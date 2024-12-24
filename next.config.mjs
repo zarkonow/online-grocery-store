@@ -1,7 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     reactStrictMode: false,
-  // Your Next.js configuration...
+ images: {
+    domains: ['localhost'],
+  }
 };
 
 export default nextConfig;

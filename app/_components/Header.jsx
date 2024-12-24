@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { LayoutGrid, Search, ShoppingBag } from "lucide-react";
 import Image from "next/image";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,21 +14,23 @@ import {
 import GlobalApi from "../_utils/GlobalApi";
 
 function Header() {
+  const [categoryList, setCategoryList] = useState([]);
+
   useEffect(() => {
     getCategoryList();
   }, []);
 
   const getCategoryList = () => {
     GlobalApi.getCategory().then((resp) => {
-      
       console.log("getCategoryList", resp.data.data);
+      setCategoryList(resp.data.data);
     });
   };
 
   return (
     <div className="flex shadow-lg justify-between bg-slate-100 items-center">
       <div className="flex justify-between items-center p-1 bg-slate-100">
-        <Image src="/logo.png" alt="logo" width={70} height={70} priority />
+        <Image src="/logo3.png" alt="logo" width={70} height={70} priority />
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -37,17 +39,31 @@ function Header() {
              outline-none border rounded-full p-2 px-2
               bg-slate-200 cursor-pointer"
             >
-              <LayoutGrid className="h-5 w-5" />
+              <LayoutGrid className="h-5 w-5 " />
               Category
             </h2>
           </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuLabel>Browse Category</DropdownMenuLabel>
+          <DropdownMenuContent className="border rounded-lg p-2">
+            <DropdownMenuLabel className="text-pretty text-slate-400">
+              Browse Category
+            </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Profile</DropdownMenuItem>
-            <DropdownMenuItem>Billing</DropdownMenuItem>
-            <DropdownMenuItem>Team</DropdownMenuItem>
-            <DropdownMenuItem>Subscription</DropdownMenuItem>
+            {categoryList.map((category, index) => (
+              <DropdownMenuItem key={index} className="flex items-center gap-2">
+                <Image
+                    src={
+                       process.env.NEXT_PUBLIC_BACKEND_BASE_URL +
+                          category.icon[0].url
+                        
+                    }
+                  unoptimized={true}
+                  alt="icon"
+                  width={25}
+                  height={25}
+                />
+                <h2 className="text-lg" >{category.name}</h2>
+              </DropdownMenuItem>
+            ))}
           </DropdownMenuContent>
         </DropdownMenu>
 
@@ -60,11 +76,12 @@ function Header() {
         </div>
       </div>
 
-      <div className="flex gap-3 items-center  bg-slate-100">
+      <div className="flex gap-1 items-center  bg-slate-100">
         <h2 className="hidden md:flex gap-1 items-center bg-slate-100">
           0<ShoppingBag />
         </h2>
-        <Button>Login</Button>
+        <div className="mr-3"><Button>Login</Button></div>
+        
       </div>
     </div>
   );
