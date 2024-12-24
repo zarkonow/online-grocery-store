@@ -1,9 +1,27 @@
-import React from 'react'
+import React from "react";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel"
 
-function Slider() {
+
+
+function Slider(sliderList) {
   return (
-    <div>Slider</div>
-  )
+    <Carousel>
+    <CarouselContent>
+      <CarouselItem>...</CarouselItem>
+      <CarouselItem>...</CarouselItem>
+      <CarouselItem>...</CarouselItem>
+    </CarouselContent>
+    <CarouselPrevious />
+    <CarouselNext />
+  </Carousel>
+  
+  );
 }
 
-export default Slider
+export default Slider;

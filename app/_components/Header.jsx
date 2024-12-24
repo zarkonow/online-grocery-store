@@ -34,12 +34,14 @@ function Header() {
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
+
+          
             <h2
-              className="flex m-5 items-center
+              className="md:flex m-5 items-center
              outline-none border rounded-full p-2 px-2
-              bg-slate-200 cursor-pointer"
+              bg-slate-200 cursor-pointer "
             >
-              <LayoutGrid className="h-5 w-5 " />
+              <LayoutGrid className="hidden  h-5 w-5 " />
               Category
             </h2>
           </DropdownMenuTrigger>
