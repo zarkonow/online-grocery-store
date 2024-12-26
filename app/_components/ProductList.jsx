@@ -8,7 +8,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
+} from "@/components/ui/dialog";
+import ProductItemDetails from "./ProductItemDetails";
 
 function ProductList({ productList }) {
   return (
@@ -52,27 +53,24 @@ function ProductList({ productList }) {
                     </p>
                   </div>
                   <div className=" p-4">
-                    
-                    <Dialog >
-  <DialogTrigger asChild>
-  <Button
-                      variant="outline"
-                      className=" text-primary border-primary hover:bg-primary hover:text-white"
-                    >
-                      Add to Cart
-                    </Button>
-  </DialogTrigger>
-  <DialogContent>
-    <DialogHeader>
-      <DialogTitle>Are you absolutely sure?</DialogTitle>
-      <DialogDescription>
-        This action cannot be undone. This will permanently delete your account
-        and remove your data from our servers.
-      </DialogDescription>
-    </DialogHeader>
-  </DialogContent>
-</Dialog>
-
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button
+                          variant="outline"
+                          className=" text-primary border-primary hover:bg-primary hover:text-white"
+                        >
+                          Add to Cart
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent>
+                        <DialogHeader>
+                          <DialogTitle></DialogTitle>
+                          <DialogDescription asChild>
+                            <ProductItemDetails product={product} />
+                          </DialogDescription>
+                        </DialogHeader>
+                      </DialogContent>
+                    </Dialog>
                   </div>
                 </div>
               </div>
