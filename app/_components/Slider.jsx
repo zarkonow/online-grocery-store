@@ -13,8 +13,8 @@ import Image from "next/image";
 
 function Slider({sliderList}) {
   return (
-    <Carousel>
-    <CarouselContent>
+    <Carousel className="cursor-pointer">
+    <CarouselContent >
       {sliderList.map((slider, index)=>(
         <CarouselItem key={index}>
           <Image src={
@@ -23,7 +23,7 @@ function Slider({sliderList}) {
           alt="slider"
           width={1000}
           height={400}
-          className="w-full h-[200px] md:h-[400px] object-cover rounded-3xl"
+          className="w-full h-[300px] md:h-[400px] object-cover rounded-3xl "
           
           />
         </CarouselItem>
