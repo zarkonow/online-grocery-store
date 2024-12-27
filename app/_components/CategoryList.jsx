@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 function CategoryList({ categoryList }) {
@@ -9,7 +10,8 @@ function CategoryList({ categoryList }) {
       </h2>
       <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-7 gap-5">
         {categoryList.map((category, index) => (
-          <div key={index} className="flex flex-col items-center
+
+          <Link href={'/products-category/' + category.name } key={index} className="flex flex-col items-center
            bg-green-100 gap-2 p-3 rounded-2xl mt-2 cursor-pointer hover:bg-green-300 group
            
            ">
@@ -23,7 +25,7 @@ function CategoryList({ categoryList }) {
               className="group-hover:scale-125 transform transition duration-300"
             />
             <h2 className="text-green-800 font-bold cursor-pointer">{category.name}</h2>
-          </div>
+          </Link>
         ))}
       </div>
     </div>

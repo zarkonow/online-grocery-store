@@ -1,9 +1,13 @@
-import React from 'react'
+import React from "react";
 
-function ProductCategory() {
+function ProductCategory({ params }) {
+  const categoryName = decodeURIComponent(params.categoryName);
   return (
-    <div>ProductCategory</div>
-  )
+    <div>
+      ProductCategory
+      <p>Category: {categoryName} </p>
+    </div>
+  );
 }
 
-export default ProductCategory
+export default ProductCategory;
