@@ -30,12 +30,12 @@ function ProductItemDetails({ product }) {
           {product.description}
         </h2>
 
-        <div className="flex gap-3 items-baseline">
+        <div className="flex gap-3 items-baseline ">
           {product.sellingPrice && (
-            <h2 className="text-3xl text-black">${product.sellingPrice}</h2>
+            <h2 className="text-5xl text-black">${product.sellingPrice}</h2>
           )}
           <h2
-            className={`font-bold text-3xl ${
+            className={`font-bold text-5xl ${
               product.sellingPrice && "line-through text-gray-400 ml-3"
             }`}
           >

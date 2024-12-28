@@ -31,10 +31,10 @@ const ProductCard = ({ product }) => {
       <h2 className="font-bold text-green-800 text-base whitespace-nowrap overflow-hidden text-ellipsis">
         {product.name}
       </h2>
-      <div className="flex items-center justify-center">
+      <div className="flex items-center justify-center text-2xl">
         {product.sellingPrice && <h2>${product.sellingPrice}</h2>}
         <p
-          className={`font-bold ${
+          className={`font-bold text-2xl ${
             product.sellingPrice && "line-through text-gray-400 ml-3"
           }`}
         >
