@@ -4,7 +4,7 @@ import React from "react";
 
 function CategoryList({ categoryList }) {
   return (
-    <div className="mt-5">
+    <div className="mt-5 cursor-pointer">
       <h2 className="text-green-800 font-bold text-2xl mb-4 text-center">
         Shop by Category
       </h2>
@@ -28,7 +28,7 @@ function CategoryList({ categoryList }) {
               className="group-hover:scale-125 transform transition duration-300"
             />
             <h2 className="text-green-800 font-bold cursor-pointer">
-              {category.name}
+              {decodeURIComponent(category.name)}
             </h2>
           </Link>
         ))}

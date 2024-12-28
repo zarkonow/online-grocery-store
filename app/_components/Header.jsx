@@ -29,7 +29,7 @@ function Header(params) {
   };
 
   return (
-    <div className="flex shadow-lg justify-between bg-slate-100 items-center">
+    <div className="flex shadow-lg justify-between bg-slate-100 items-center cursor-pointer">
       
       <div className="flex justify-between items-center p-1 bg-slate-100">
       <Link href={"/"}>

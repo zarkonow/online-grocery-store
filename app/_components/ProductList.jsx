@@ -17,6 +17,7 @@ const ProductCard = ({ product }) => {
       className="items-center justify-center text-center border rounded-2xl
       hover:scale-110 hover:shadow-2xl transition duration-300 ease-in-out hover:bg-green-100 cursor-pointer"
     >
+      
       <Image
         src={
           product.images?.[0]?.url
@@ -41,8 +42,8 @@ const ProductCard = ({ product }) => {
           ${product.mrp}
         </p>
       </div>
-      <div className="p-4">
-        <Dialog>
+      <div className="p-4 ">
+        <Dialog >
           <DialogTrigger asChild>
             <Button
               variant="outline"
@@ -52,10 +53,13 @@ const ProductCard = ({ product }) => {
             </Button>
           </DialogTrigger>
           <DialogContent>
-            <DialogTitle >{''}</DialogTitle>
+            <DialogTitle ></DialogTitle>
             <DialogHeader>
+              
+
               <DialogDescription asChild>
-                <ProductItemDetails product={product} />
+              
+                <ProductItemDetails product={product}  />
               </DialogDescription>
             </DialogHeader>
           </DialogContent>

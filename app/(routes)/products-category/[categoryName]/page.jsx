@@ -6,6 +6,8 @@ import ProductList from "@/app/_components/ProductList";
 async function ProductCategory({ params }) {
   const productList = await GlobalApi.getProductsByCategory(params.categoryName);
   const categoryList = await GlobalApi.getCategoryList();
+  
+
   return (
     <div>
       <h2 className="p-4 bg-primary font-bold text-white text-3xl text-center">

@@ -13,7 +13,7 @@ function ProductItemDetails({ product }) {
 
   return (
     <div
-      className="grid grid-cols-1 md:grid-cols-2 p-7
+      className="grid grid-cols-1 md:grid-cols-2 p-7 cursor-pointer
       items-center justify-center gap-8 overflow-x-hidden"
     >
       <Image
@@ -21,7 +21,7 @@ function ProductItemDetails({ product }) {
         alt={"image"}
         width={300}
         height={300}
-        className="bg-slate-100 rounded-2xl object-contain"
+        className="bg-slate-100 rounded-2xl object-contain md:object-contain"
       />
 
       <div className="flex flex-col gap-5">
