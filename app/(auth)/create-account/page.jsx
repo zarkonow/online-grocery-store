@@ -22,8 +22,9 @@ const router = useRouter();
       console.log(resp.data.jwt);
       sessionStorage.setItem("user", JSON.stringify(resp.data.user));
       sessionStorage.setItem("jwt", resp.data.jwt);
-      router.push("/");
       toast('success', 'Account Created Successfully')
+      router.push("/");
+      
       
     },(e) => {
       toast('error', e.response.data.message)

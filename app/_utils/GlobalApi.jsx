@@ -37,11 +37,17 @@ const registerUsers = (username, email, password) => axiosClient.post("/auth/loc
   password
 })
 
+const SingIn =(email, password) => axiosClient.post("/auth/local/",{
+  identifier: email,
+  password: password
+})
+
 export default {
   getCategory,
   getSliders,
   getCategoryList,
   getProducts,
   getProductsByCategory,
-  registerUsers
+  registerUsers,
+  SingIn
 };
