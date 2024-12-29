@@ -5,31 +5,36 @@ import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 function CreateAccount() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-const router = useRouter();
+  const router = useRouter();
 
-
+  useEffect(() => {
+    if (sessionStorage.getItem("jwt")) {
+      router.push("/");
+    }
+  });
 
   const onCreateAccount = async () => {
-    GlobalApi.registerUsers(username, email, password).then((resp) => {
-      console.log(resp.data.user);
-      console.log(resp.data.jwt);
-      sessionStorage.setItem("user", JSON.stringify(resp.data.user));
-      sessionStorage.setItem("jwt", resp.data.jwt);
-      toast('success', 'Account Created Successfully')
-      router.push("/");
-      
-      
-    },(e) => {
-      toast('error', e.response.data.message)
-    })
-  }
+    GlobalApi.registerUsers(username, email, password).then(
+      (resp) => {
+        console.log(resp.data.user);
+        console.log(resp.data.jwt);
+        sessionStorage.setItem("user", JSON.stringify(resp.data.user));
+        sessionStorage.setItem("jwt", resp.data.jwt);
+        toast("success", "Account Created Successfully");
+        router.push("/");
+      },
+      (e) => {
+        toast("error", e.response.data.message);
+      }
+    );
+  };
 
   return (
     <div className="flex items-baseline justify-center my-20 cursor-pointer">
@@ -62,9 +67,12 @@ const router = useRouter();
             type="password"
             placeholder="Password"
           />
-          <Button onClick={()=>onCreateAccount()}
+          <Button
+            onClick={() => onCreateAccount()}
             disabled={username === "" || email === "" || password === ""}
-            >Create Account</Button>
+          >
+            Create Account
+          </Button>
           <p>
             Already Have an Account:
             <Link href={"/sing-in"} className="text-blue-500">

@@ -5,13 +5,20 @@ import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 function SingIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
+
+useEffect(()=>{
+  if(sessionStorage.getItem("jwt")){
+    router.push("/")
+  }
+})
+
 
   const onSingIn = () => {
     GlobalApi.SingIn(email, password).then(
@@ -22,6 +29,8 @@ function SingIn() {
         router.push("/");
       },
       (e) => {
+        console.log(e);
+
         toast("error", e.response.data.message);
       }
     );

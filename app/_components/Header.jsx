@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { LayoutGrid, Search, ShoppingBag } from "lucide-react";
+import { Circle, CircleUserRound, LayoutGrid, Search, ShoppingBag } from "lucide-react";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import {
@@ -16,6 +16,7 @@ import Link from "next/link";
 
 function Header(params) {
   const [categoryList, setCategoryList] = useState([]);
+  const isLogin = sessionStorage.getItem("jwt") ? true : false;
 
   useEffect(() => {
     getCategoryList();
@@ -30,10 +31,9 @@ function Header(params) {
 
   return (
     <div className="flex shadow-lg justify-between bg-slate-100 items-center cursor-pointer">
-      
-      <div className="flex justify-between items-center p-1 bg-slate-100 " >
-      <Link href={"/"}>
-        <Image src="/logo3.png" alt="logo" width={70} height={70} priority />
+      <div className="flex justify-between items-center p-1 bg-slate-100 ">
+        <Link href={"/"}>
+          <Image src="/logo3.png" alt="logo" width={70} height={70} priority />
         </Link>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -48,13 +48,15 @@ function Header(params) {
           </DropdownMenuTrigger>
           <DropdownMenuContent className="border rounded-lg p-2">
             <DropdownMenuLabel className="text-pretty text-slate-400">
-              Browse Category 
+              Browse Category
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             {categoryList.map((category, index) => (
-              <Link key={index} href={'/products-category/'+category.name}>
-                <DropdownMenuItem key={index} className="flex items-center gap-2">
-                  
+              <Link key={index} href={"/products-category/" + category.name}>
+                <DropdownMenuItem
+                  key={index}
+                  className="flex items-center gap-2"
+                >
                   <Image
                     src={
                       process.env.NEXT_PUBLIC_BACKEND_BASE_URL +
@@ -64,10 +66,8 @@ function Header(params) {
                     alt="icon"
                     width={25}
                     height={25}
-                    
                   />
                   <h2 className="text-lg cursor-pointer">{category.name}</h2>
-                  
                 </DropdownMenuItem>
               </Link>
             ))}
@@ -88,7 +88,14 @@ function Header(params) {
           0<ShoppingBag />
         </h2>
         <div className="mr-3">
-          <Button>Login</Button>
+          {!isLogin ? 
+            <Link href={"/sign-in"}>
+              <Button>Login</Button>
+            </Link>
+            : <CircleUserRound 
+            className="bg-green-100 text-primary h-12 w-12 p-2 rounded-full cursor-pointer"
+            />
+          }
         </div>
       </div>
     </div>
