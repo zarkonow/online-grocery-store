@@ -4,7 +4,10 @@ const axiosClient = axios.create({
   baseURL: "http://192.168.0.2:1337/api",
 });
 
-const getCategory = () => axiosClient.get("/categories?populate=*");
+const getCategory = () =>axiosClient.get("/categories?populate=*")
+
+
+
 const getSliders = () =>
   axiosClient.get("/sliders?populate=*").then((resp) => {
     return resp.data.data;
@@ -27,10 +30,18 @@ const getProductsByCategory = (category) =>
       return resp.data.data;
     });
 
+
+const registerUsers = (username, email, password) => axiosClient.post("/auth/local/register", {
+  username,
+  email,
+  password
+})
+
 export default {
   getCategory,
   getSliders,
   getCategoryList,
   getProducts,
   getProductsByCategory,
+  registerUsers
 };

@@ -11,7 +11,7 @@ async function ProductCategory({ params }) {
   return (
     <div>
       <h2 className="p-4 bg-primary font-bold text-white text-3xl text-center">
-        {params.categoryName}
+         {decodeURIComponent(params.categoryName)}
       </h2>
       <TopCategoryList categoryList={categoryList}
       selectedCategory={params.categoryName}

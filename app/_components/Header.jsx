@@ -31,7 +31,7 @@ function Header(params) {
   return (
     <div className="flex shadow-lg justify-between bg-slate-100 items-center cursor-pointer">
       
-      <div className="flex justify-between items-center p-1 bg-slate-100">
+      <div className="flex justify-between items-center p-1 bg-slate-100 " >
       <Link href={"/"}>
         <Image src="/logo3.png" alt="logo" width={70} height={70} priority />
         </Link>
@@ -48,7 +48,7 @@ function Header(params) {
           </DropdownMenuTrigger>
           <DropdownMenuContent className="border rounded-lg p-2">
             <DropdownMenuLabel className="text-pretty text-slate-400">
-              Browse Category
+              Browse Category 
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             {categoryList.map((category, index) => (
@@ -64,8 +64,9 @@ function Header(params) {
                     alt="icon"
                     width={25}
                     height={25}
+                    
                   />
-                  <h2 className="text-lg">{category.name}</h2>
+                  <h2 className="text-lg cursor-pointer">{category.name}</h2>
                   
                 </DropdownMenuItem>
               </Link>

@@ -6,10 +6,11 @@ function CategoryList({ categoryList }) {
   return (
     <div className="mt-5 cursor-pointer">
       <h2 className="text-green-800 font-bold text-2xl mb-4 text-center">
-        Shop by Category
+        Shop by Category 
       </h2>
       <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-7 gap-5">
         {categoryList.map((category, index) => (
+          
           <Link
             href={"/products-category/" + category.name}
             key={index}
@@ -28,7 +29,7 @@ function CategoryList({ categoryList }) {
               className="group-hover:scale-125 transform transition duration-300"
             />
             <h2 className="text-green-800 font-bold cursor-pointer">
-              {decodeURIComponent(category.name)}
+            {category.name}
             </h2>
           </Link>
         ))}
