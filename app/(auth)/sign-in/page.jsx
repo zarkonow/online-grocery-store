@@ -2,6 +2,7 @@
 import GlobalApi from "@/app/_utils/GlobalApi";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { LoaderIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -12,26 +13,28 @@ function SingIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
+  const [loader, setLoader] = useState();
 
-useEffect(()=>{
-  if(sessionStorage.getItem("jwt")){
-    router.push("/")
-  }
-})
+  useEffect(() => {
+    if (sessionStorage.getItem("jwt")) {
+      router.push("/");
+    }
+  });
 
-
-  const onSingIn = () => {
-    GlobalApi.SingIn(email, password).then(
+  const onSignIn = () => {
+    setLoader(true);
+    GlobalApi.SignIn(email, password).then(
       (resp) => {
         sessionStorage.setItem("user", JSON.stringify(resp.data.user));
         sessionStorage.setItem("jwt", resp.data.jwt);
         toast("success", "Sing In Successfully");
         router.push("/");
+        setLoader(false);
       },
       (e) => {
         console.log(e);
-
-        toast("error", e.response.data.message);
+        toast(e.response.data.error.message);
+        setLoader(false);
       }
     );
   };
@@ -60,11 +63,12 @@ useEffect(()=>{
             placeholder="Password"
           />
           <Button
-            onClick={() => onSingIn()}
+            onClick={() => onSignIn()}
             disabled={email === "" || password === ""}
           >
-            Sing In
+            {loader ?<LoaderIcon className="animate-spin"/>: 'Sign In'}
           </Button>
+          
           <p>
             Don't have an account?
             <Link href={"/create-account"} className="text-blue-500">

@@ -13,6 +13,7 @@ function CreateAccount() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
+  const [loader, setLoader] = useState();
 
   useEffect(() => {
     if (sessionStorage.getItem("jwt")) {
@@ -31,7 +32,7 @@ function CreateAccount() {
         router.push("/");
       },
       (e) => {
-        toast("error", e.response.data.message);
+        toast(e.response.data.error.message);
       }
     );
   };
@@ -71,14 +72,16 @@ function CreateAccount() {
             onClick={() => onCreateAccount()}
             disabled={username === "" || email === "" || password === ""}
           >
-            Create Account
+            {loader ?<LoaderIcon className="animate-spin text-2xl"/>: 'Create an Account'}
+           
+            
           </Button>
           <p>
             Already Have an Account:
-            <Link href={"/sing-in"} className="text-blue-500">
+            <Link href={"/sign-in"} className="text-blue-500">
               {" "}
               Click Here to Sign In
-            </Link>
+            </Link> 
           </p>
         </div>
       </div>

@@ -1,6 +1,12 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Circle, CircleUserRound, LayoutGrid, Search, ShoppingBag } from "lucide-react";
+import {
+  Circle,
+  CircleUserRound,
+  LayoutGrid,
+  Search,
+  ShoppingBag,
+} from "lucide-react";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import {
@@ -13,10 +19,13 @@ import {
 } from "@/components/ui/dropdown-menu";
 import GlobalApi from "../_utils/GlobalApi";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+
 
 function Header(params) {
   const [categoryList, setCategoryList] = useState([]);
   const isLogin = sessionStorage.getItem("jwt") ? true : false;
+  const router = useRouter();
 
   useEffect(() => {
     getCategoryList();
@@ -28,6 +37,11 @@ function Header(params) {
       setCategoryList(resp.data.data);
     });
   };
+
+  const onSignOut = () => {
+    sessionStorage.clear()
+    router.push("/sign-in");
+  }
 
   return (
     <div className="flex shadow-lg justify-between bg-slate-100 items-center cursor-pointer">
@@ -88,14 +102,25 @@ function Header(params) {
           0<ShoppingBag />
         </h2>
         <div className="mr-3">
-          {!isLogin ? 
+          {!isLogin ? (
             <Link href={"/sign-in"}>
               <Button>Login</Button>
             </Link>
-            : <CircleUserRound 
-            className="bg-green-100 text-primary h-12 w-12 p-2 rounded-full cursor-pointer"
-            />
-          }
+          ) : (
+            <DropdownMenu >
+              <DropdownMenuTrigger asChild>
+                <CircleUserRound className="bg-green-100 text-primary h-12 w-12 p-2 rounded-full cursor-pointer" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent >
+                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>Profile</DropdownMenuItem>
+                <DropdownMenuItem>My Orders</DropdownMenuItem>
+                
+                <DropdownMenuItem onClick={()=>onSignOut()}>Logout</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
         </div>
       </div>
     </div>
