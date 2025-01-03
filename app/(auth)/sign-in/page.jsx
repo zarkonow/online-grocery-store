@@ -55,6 +55,7 @@ function SingIn() {
             label="email"
             type="email"
             placeholder="email@.com"
+            autoComplete="email"
           />
           <Input
             onChange={(e) => setPassword(e.currentTarget.value)}
@@ -62,13 +63,14 @@ function SingIn() {
             type="password"
             placeholder="Password"
           />
+
           <Button
             onClick={() => onSignIn()}
             disabled={email === "" || password === ""}
           >
-            {loader ?<LoaderIcon className="animate-spin"/>: 'Sign In'}
+            {loader ? <LoaderIcon className="animate-spin" /> : "Sign In"}
           </Button>
-          
+
           <p>
             Don't have an account?
             <Link href={"/create-account"} className="text-blue-500">

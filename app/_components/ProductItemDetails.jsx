@@ -1,15 +1,53 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { ShoppingBasket } from "lucide-react";
+import { LoaderCircle, ShoppingBasket } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import GlobalApi from "../_utils/GlobalApi";
+import { toast } from "sonner";
 
 function ProductItemDetails({ product }) {
+  const jwt = sessionStorage.getItem("jwt");
+
+  const user = JSON.parse(sessionStorage.getItem("user"));
+
   const [productTotalPrice, setProductTotalPrice] = useState(
     product.sellingPrice ? product.sellingPrice : product.mrp
   );
-
   const [quantity, setQuantity] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+
+  const addToCart = async () => {
+    setLoading(true);
+    if (!jwt) {
+      router.push("/sign-in");
+      setLoading(false);
+      return;
+    }
+    const data = {
+      data: {
+        quantity: quantity,
+        amount: (quantity * productTotalPrice).toFixed(2),
+        product: product.id,
+        users_permissions_user: user.id,
+      },
+    };
+    console.log(data);
+
+    GlobalApi.addToCart(data, jwt).then(
+      (resp) => {
+        console.log(resp);
+        toast("success: Product added to cart successfully");
+        setLoading(false);
+      },
+      (e) => {
+        toast("error", "Product already exists in cart");
+        setLoading(false);
+      }
+    );
+  };
 
   return (
     <div
@@ -70,9 +108,13 @@ function ProductItemDetails({ product }) {
             </h2>
           </div>
 
-          <Button className="flex gap-3 bg-green-600 text-white px-5 py-2 rounded hover:bg-green-700">
+          <Button
+            className="flex gap-3"
+            onClick={() => addToCart()}
+            disabled={loading}
+          >
             <ShoppingBasket />
-            Add To Cart
+            {loading ? <LoaderCircle /> : "Add To Cart"}
           </Button>
         </div>
         <h2>

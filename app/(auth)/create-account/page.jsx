@@ -22,17 +22,18 @@ function CreateAccount() {
   });
 
   const onCreateAccount = async () => {
+    setLoader(true);
     GlobalApi.registerUsers(username, email, password).then(
       (resp) => {
-        console.log(resp.data.user);
-        console.log(resp.data.jwt);
         sessionStorage.setItem("user", JSON.stringify(resp.data.user));
         sessionStorage.setItem("jwt", resp.data.jwt);
         toast("success", "Account Created Successfully");
         router.push("/");
+        setLoader(false);
       },
       (e) => {
         toast(e.response.data.error.message);
+        setLoader(false);
       }
     );
   };
@@ -72,16 +73,19 @@ function CreateAccount() {
             onClick={() => onCreateAccount()}
             disabled={username === "" || email === "" || password === ""}
           >
-            {loader ?<LoaderIcon className="animate-spin text-2xl"/>: 'Create an Account'}
-           
-            
+            {loader ? (
+              <LoaderIcon className="animate-spin text-2xl" />
+            ) : (
+              "Create an Account"
+            )}
           </Button>
+
           <p>
             Already Have an Account:
             <Link href={"/sign-in"} className="text-blue-500">
               {" "}
               Click Here to Sign In
-            </Link> 
+            </Link>
           </p>
         </div>
       </div>
