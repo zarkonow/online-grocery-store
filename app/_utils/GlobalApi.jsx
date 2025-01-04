@@ -4,9 +4,7 @@ const axiosClient = axios.create({
   baseURL: "http://192.168.0.2:1337/api",
 });
 
-const getCategory = () =>axiosClient.get("/categories?populate=*")
-
-
+const getCategory = () => axiosClient.get("/categories?populate=*");
 
 const getSliders = () =>
   axiosClient.get("/sliders?populate=*").then((resp) => {
@@ -30,24 +28,37 @@ const getProductsByCategory = (category) =>
       return resp.data.data;
     });
 
+const registerUsers = (username, email, password) =>
+  axiosClient.post("/auth/local/register", {
+    username,
+    email,
+    password,
+  });
 
-const registerUsers = (username, email, password) => axiosClient.post("/auth/local/register", {
-  username,
-  email,
-  password
-})
+const SignIn = (email, password) =>
+  axiosClient.post("/auth/local/", {
+    identifier: email,
+    password: password,
+  });
 
-const SignIn =(email, password) => axiosClient.post("/auth/local/",{
-  identifier: email,
-  password: password
-})
+const addToCart = (data, jwt) =>
+  axiosClient.post("/user-carts", data, {
+    headers: {
+      Authorization: "Bearer " + jwt,
+    },
+  });
 
-
-const addToCart = (data, jwt) => axiosClient.post("/user-carts", data,{
-  headers:{
-    Authorization: 'Bearer ' + jwt
-  }
-});
+const getCartItems = (userId, jwt) =>
+  axiosClient.get(  
+    `/user-carts?filters[userId][$eq]=${userId}&populate=*`,
+    {
+      headers: {
+        Authorization: "Bearer " + jwt,
+      },
+    }).then(resp=>{
+      return resp.data.data;
+    }
+  )
 
 export default {
   getCategory,
@@ -57,5 +68,6 @@ export default {
   getProductsByCategory,
   registerUsers,
   SignIn,
-  addToCart
+  addToCart,
+  getCartItems
 };

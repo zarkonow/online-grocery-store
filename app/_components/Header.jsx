@@ -1,14 +1,13 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import {
-  Circle,
   CircleUserRound,
   LayoutGrid,
   Search,
-  ShoppingBag,
+  ShoppingBasket,
 } from "lucide-react";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,28 +19,43 @@ import {
 import GlobalApi from "../_utils/GlobalApi";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { UpdateCartContext } from "../_context/UpdateCartContext";
 
-
-function Header(params) {
+function Header() {
   const [categoryList, setCategoryList] = useState([]);
+  const [totalCartItem, setTotalCartItem] = useState(0);
+  const jwt = sessionStorage.getItem("jwt");
   const isLogin = sessionStorage.getItem("jwt") ? true : false;
+  const user = JSON.parse(sessionStorage.getItem("user"));
+  const { updateCart, setUpdateCart } = useContext(UpdateCartContext);
+
   const router = useRouter();
 
   useEffect(() => {
     getCategoryList();
   }, []);
 
+  useEffect(() => {
+    getCartItems();
+  }, [updateCart]);
+
   const getCategoryList = () => {
     GlobalApi.getCategory().then((resp) => {
-      console.log("getCategoryList", resp.data.data);
+      // console.log("getCategoryList", resp.data.data);
       setCategoryList(resp.data.data);
     });
   };
 
+  const getCartItems = async () => {
+    const cartItemList = await GlobalApi.getCartItems(user.id, jwt);
+    console.log(cartItemList);
+    setTotalCartItem(cartItemList?.length);
+  };
+
   const onSignOut = () => {
-    sessionStorage.clear()
+    sessionStorage.clear();
     router.push("/sign-in");
-  }
+  };
 
   return (
     <div className="flex shadow-lg justify-between bg-slate-100 items-center cursor-pointer">
@@ -99,7 +113,10 @@ function Header(params) {
 
       <div className="flex gap-1 items-center  bg-slate-100">
         <h2 className="hidden md:flex gap-1 items-center bg-slate-100">
-          0<ShoppingBag />
+          <ShoppingBasket className="h-7 w-7" />
+          <span className="bg-primary text-white p-1 rounded-full">
+            {totalCartItem}
+          </span>
         </h2>
         <div className="mr-3">
           {!isLogin ? (
@@ -107,17 +124,19 @@ function Header(params) {
               <Button>Login</Button>
             </Link>
           ) : (
-            <DropdownMenu >
+            <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <CircleUserRound className="bg-green-100 text-primary h-12 w-12 p-2 rounded-full cursor-pointer" />
               </DropdownMenuTrigger>
-              <DropdownMenuContent >
+              <DropdownMenuContent>
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>Profile</DropdownMenuItem>
                 <DropdownMenuItem>My Orders</DropdownMenuItem>
-                
-                <DropdownMenuItem onClick={()=>onSignOut()}>Logout</DropdownMenuItem>
+
+                <DropdownMenuItem onClick={() => onSignOut()}>
+                  Logout
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           )}
