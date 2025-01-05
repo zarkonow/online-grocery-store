@@ -48,18 +48,31 @@ const addToCart = (data, jwt) =>
     },
   });
 
+  // http://192.168.0.2:1337/api/user-carts?populate=product.images
 const getCartItems = (userId, jwt) =>
   axiosClient.get(  
-    `/user-carts?filters[userId][$eq]=${userId}&populate=*`,
+    `/user-carts?filters[userId][$eq]=${userId}&populate=product.images`,
     {
       headers: {
         Authorization: "Bearer " + jwt,
       },
     }).then(resp=>{
-      return resp.data.data;
+      const data = resp.data.data
+      const cartItemsList = data.map((item, index) =>({
+        name: item.product ? item.product.name : '',
+        quantity: item.quantity,
+        amount: item.product.mrp ,
+        image: item.product && item.product.images && item.product.images[0] ? item.product.images[0].url : '',
+        actualPrice: item.product ? item.product.mrp : 0,
+        id: item.id
+
+
+      }))
+      return cartItemsList;
     }
   )
 
+  
 export default {
   getCategory,
   getSliders,

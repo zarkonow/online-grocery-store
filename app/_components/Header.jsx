@@ -20,6 +20,15 @@ import GlobalApi from "../_utils/GlobalApi";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { UpdateCartContext } from "../_context/UpdateCartContext";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet"
+import CartItemList from "./CartItemList";
 
 function Header() {
   const [categoryList, setCategoryList] = useState([]);
@@ -28,6 +37,7 @@ function Header() {
   const isLogin = sessionStorage.getItem("jwt") ? true : false;
   const user = JSON.parse(sessionStorage.getItem("user"));
   const { updateCart, setUpdateCart } = useContext(UpdateCartContext);
+  const [cartItemList, setCartItemList] = useState([]);
 
   const router = useRouter();
 
@@ -47,9 +57,10 @@ function Header() {
   };
 
   const getCartItems = async () => {
-    const cartItemList = await GlobalApi.getCartItems(user.id, jwt);
-    console.log(cartItemList);
-    setTotalCartItem(cartItemList?.length);
+    const cartItemList_ = await GlobalApi.getCartItems(user.id, jwt);
+    console.log(cartItemList_);
+    setTotalCartItem(cartItemList_?.length);
+    setCartItemList(cartItemList_);
   };
 
   const onSignOut = () => {
@@ -112,13 +123,33 @@ function Header() {
       </div>
 
       <div className="flex gap-1 items-center  bg-slate-100">
-        <h2 className="hidden md:flex gap-1 items-center bg-slate-100">
+        
+        
+
+        <Sheet>
+  <SheetTrigger>
+    <h2 className="hidden md:flex gap-1 items-center bg-slate-100">
           <ShoppingBasket className="h-7 w-7" />
           <span className="bg-primary text-white p-1 rounded-full">
             {totalCartItem}
           </span>
         </h2>
-        <div className="mr-3">
+        </SheetTrigger>
+  <SheetContent>
+    <SheetHeader>
+      <SheetTitle className='bg-primary text-white font-bold text-lg p-2'>My Cart</SheetTitle>
+      <SheetDescription asChild>
+        <CartItemList cartItemList={cartItemList}/>
+      </SheetDescription>
+    </SheetHeader>
+  </SheetContent>
+</Sheet>
+
+
+
+
+
+
           {!isLogin ? (
             <Link href={"/sign-in"}>
               <Button>Login</Button>
@@ -140,7 +171,7 @@ function Header() {
               </DropdownMenuContent>
             </DropdownMenu>
           )}
-        </div>
+        
       </div>
     </div>
   );
