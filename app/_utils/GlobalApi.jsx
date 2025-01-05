@@ -61,7 +61,7 @@ const getCartItems = (userId, jwt) =>
       const cartItemsList = data.map((item, index) =>({
         name: item.product ? item.product.name : '',
         quantity: item.quantity,
-        amount: item.product.mrp ,
+        amount: item.product.sellingPrice * item.quantity,
         image: item.product && item.product.images && item.product.images[0] ? item.product.images[0].url : '',
         actualPrice: item.product ? item.product.mrp : 0,
         id: item.id
