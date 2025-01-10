@@ -1,4 +1,5 @@
 "use client";
+
 import { Button } from "@/components/ui/button";
 import {
   CircleUserRound,
@@ -27,15 +28,19 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@/components/ui/sheet"
+} from "@/components/ui/sheet";
 import CartItemList from "./CartItemList";
+import { toast } from "sonner";
 
 function Header() {
-  const [categoryList, setCategoryList] = useState([]);
-  const [totalCartItem, setTotalCartItem] = useState(0);
   const jwt = sessionStorage.getItem("jwt");
   const isLogin = sessionStorage.getItem("jwt") ? true : false;
+  const [categoryList, setCategoryList] = useState([]);
+
+  const [totalCartItem, setTotalCartItem] = useState(0);
+
   const user = JSON.parse(sessionStorage.getItem("user"));
+
   const { updateCart, setUpdateCart } = useContext(UpdateCartContext);
   const [cartItemList, setCartItemList] = useState([]);
 
@@ -66,6 +71,15 @@ function Header() {
   const onSignOut = () => {
     sessionStorage.clear();
     router.push("/sign-in");
+  };
+
+  const onDeleteItem = (id) => {
+    GlobalApi.deleteCartItem(jwt, id).then((resp) => {
+      toast("Item Removed!");
+      // getCartItems()
+    });
+    console.log(id);
+    console.log(jwt);
   };
 
   return (
@@ -123,55 +137,51 @@ function Header() {
       </div>
 
       <div className="flex gap-1 items-center  bg-slate-100">
-        
-        
-
         <Sheet>
-  <SheetTrigger>
-    <h2 className="hidden md:flex gap-1 items-center bg-slate-100">
-          <ShoppingBasket className="h-7 w-7" />
-          <span className="bg-primary text-white p-1 rounded-full">
-            {totalCartItem}
-          </span>
-        </h2>
-        </SheetTrigger>
-  <SheetContent>
-    <SheetHeader>
-      <SheetTitle className='bg-primary text-white font-bold text-lg p-2'>My Cart</SheetTitle>
-      <SheetDescription asChild>
-        <CartItemList cartItemList={cartItemList}/>
-      </SheetDescription>
-    </SheetHeader>
-  </SheetContent>
-</Sheet>
+          <SheetTrigger>
+            <h2 className="hidden md:flex gap-1 items-center bg-slate-100">
+              <ShoppingBasket className="h-7 w-7" />
+              <span className="bg-primary text-white p-1 rounded-full">
+                {totalCartItem}
+              </span>
+            </h2>
+          </SheetTrigger>
+          <SheetContent>
+            <SheetHeader>
+              <SheetTitle className="bg-primary text-white font-bold text-lg p-2">
+                My Cart
+              </SheetTitle>
+              <SheetDescription asChild>
+                <CartItemList
+                  cartItemList={cartItemList}
+                  onDeleteItem={onDeleteItem}
+                />
+              </SheetDescription>
+            </SheetHeader>
+          </SheetContent>
+        </Sheet>
 
+        {!isLogin ? (
+          <Link href={"/sign-in"}>
+            <Button>Login</Button>
+          </Link>
+        ) : (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <CircleUserRound className="bg-green-100 text-primary h-12 w-12 p-2 rounded-full cursor-pointer" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>Profile</DropdownMenuItem>
+              <DropdownMenuItem>My Orders</DropdownMenuItem>
 
-
-
-
-
-          {!isLogin ? (
-            <Link href={"/sign-in"}>
-              <Button>Login</Button>
-            </Link>
-          ) : (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <CircleUserRound className="bg-green-100 text-primary h-12 w-12 p-2 rounded-full cursor-pointer" />
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>Profile</DropdownMenuItem>
-                <DropdownMenuItem>My Orders</DropdownMenuItem>
-
-                <DropdownMenuItem onClick={() => onSignOut()}>
-                  Logout
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          )}
-        
+              <DropdownMenuItem onClick={() => onSignOut()}>
+                Logout
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
       </div>
     </div>
   );

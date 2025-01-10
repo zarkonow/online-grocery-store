@@ -27,6 +27,7 @@ function ProductItemDetails({ product }) {
       setLoading(false);
       return;
     }
+    
     const data = {
       data: {
         quantity: quantity,
@@ -40,7 +41,7 @@ function ProductItemDetails({ product }) {
 
     GlobalApi.addToCart(data, jwt).then(
       (resp) => {
-        console.log(resp);
+        // console.log(resp);
         toast("success: Product added to cart successfully");
         setUpdateCart(!updateCart);
         setLoading(false);

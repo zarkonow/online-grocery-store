@@ -1,7 +1,7 @@
 const { default: axios } = require("axios");
 
 const axiosClient = axios.create({
-  baseURL: "http://192.168.0.2:1337/api",
+  baseURL: "http://192.168.0.3:1337/api",
 });
 
 const getCategory = () => axiosClient.get("/categories?populate=*");
@@ -48,31 +48,38 @@ const addToCart = (data, jwt) =>
     },
   });
 
-  // http://192.168.0.2:1337/api/user-carts?populate=product.images
+//user-carts?filters[userId][$eq]=${userId}&populate=product.images
 const getCartItems = (userId, jwt) =>
-  axiosClient.get(  
-    `/user-carts?filters[userId][$eq]=${userId}&populate=product.images`,
-    {
-      headers: {
-        Authorization: "Bearer " + jwt,
-      },
-    }).then(resp=>{
-      const data = resp.data.data
-      const cartItemsList = data.map((item, index) =>({
-        name: item.product ? item.product.name : '',
+  axiosClient
+    .get(
+      `/user-carts?filters[userId][$eq]=${userId}&populate=product.images
+`,
+      {
+        headers: {
+          Authorization: "Bearer " + jwt,
+        },
+      }
+    )
+    .then((resp) => {
+      const data = resp.data.data;
+      const cartItemsList = data.map((item) => ({
+        name: item.product?.name,
         quantity: item.quantity,
-        amount: item.product.sellingPrice * item.quantity,
-        image: item.product && item.product.images && item.product.images[0] ? item.product.images[0].url : '',
-        actualPrice: item.product ? item.product.mrp : 0,
-        id: item.id
-
-
-      }))
+        amount: item.product?.sellingPrice * item.quantity,
+        image: item.product?.images[0]?.url,
+        actualPrice: item.product?.mrp,
+        id: item.id,
+      }));
       return cartItemsList;
-    }
-  )
+    });
 
-  
+const deleteCartItem = (jwt, id) =>
+  axiosClient.delete("/user-carts/" + id, {
+    headers: {
+      Authorization: "Bearer " + jwt,
+    },
+  });
+
 export default {
   getCategory,
   getSliders,
@@ -82,5 +89,6 @@ export default {
   registerUsers,
   SignIn,
   addToCart,
-  getCartItems
+  getCartItems,
+  deleteCartItem,
 };
